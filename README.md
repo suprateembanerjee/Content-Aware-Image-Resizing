@@ -21,6 +21,8 @@ Setup
 
 Run the files in terminal using descriptions at the beginning of each file.
 
+For a one-shot test, run carve using `python carve.py surfer.jpg 100 surfer_resized.png`
+
 Image credits
 -------------
 
