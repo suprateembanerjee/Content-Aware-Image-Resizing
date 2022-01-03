@@ -20,6 +20,7 @@ import numpy as np
 from energy import compute_energy
 from seam_v2 import compute_vertical_seam_v2, visualize_seam_on_image
 from utils import Color, read_image_into_array, write_array_into_image
+from video_stitch import make_video
 
 
 def remove_seam_from_image(image:List[List[Color]], seam_xs:list[int]) -> List[List[Color]]:
@@ -70,9 +71,11 @@ def remove_n_lowest_seams_from_image(image:List[List[Color]], num_seams_to_remov
         t1 = time_ns()
         energy_data = compute_energy(image)
         seam, _ = compute_vertical_seam_v2(energy_data)
+        visualized_pixels = visualize_seam_on_image(image, seam)
         image = remove_seam_from_image(image, seam)
         times.append(time_ns() - t1)
-        write_array_into_image(image, f'out/{i}.png')
+
+        write_array_into_image(visualized_pixels, f'visual_out/{i}.png')
 
     print(f'Average time taken per seam: {mean(times)/10**9:.2f}s')
     return image
@@ -90,7 +93,15 @@ if __name__ == '__main__':
     pixels = read_image_into_array(input_filename)
 
     print(f'Resizing...')
-    resized_pixels = \
-        remove_n_lowest_seams_from_image(pixels, num_seams_to_remove)
-    print(f'Saving {output_filename}')
+    resized_pixels = remove_n_lowest_seams_from_image(pixels, num_seams_to_remove)
+
+    print(f'Saving {output_filename}...')
     write_array_into_image(resized_pixels, output_filename)
+
+    print('Generating Video...')
+    make_video(input_dir = 'visual_out',
+                out = 'result.mp4',
+                num_frames = 100,
+                fps = 10)
+    
+    print('Complete')
