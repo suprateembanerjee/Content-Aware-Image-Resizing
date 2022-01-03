@@ -12,13 +12,17 @@ resize your image!
 
 
 import sys
+from typing import List
+from statistics import mean
+from time import time_ns
+import numpy as np
 
 from energy import compute_energy
 from seam_v2 import compute_vertical_seam_v2, visualize_seam_on_image
 from utils import Color, read_image_into_array, write_array_into_image
 
 
-def remove_seam_from_image(image, seam_xs):
+def remove_seam_from_image(image:List[List[Color]], seam_xs:list[int]) -> List[List[Color]]:
     """
     Remove pixels from the given image, as indicated by each of the
     x-coordinates in the input. The x-coordinates are specified from top to
@@ -29,10 +33,16 @@ def remove_seam_from_image(image, seam_xs):
     one element in each row, but will have the same number of rows.
     """
 
-    raise NotImplementedError('remove_seam_from_image is not implemented')
+    cropped = []
+
+    for i, row in enumerate(image):
+        row.pop(seam_xs[i])
+        cropped.append(row)
+
+    return cropped
 
 
-def remove_n_lowest_seams_from_image(image, num_seams_to_remove):
+def remove_n_lowest_seams_from_image(image:List[List[Color]], num_seams_to_remove:int) -> List[List[Color]]:
     """
     Iteratively:
 
@@ -53,8 +63,19 @@ def remove_n_lowest_seams_from_image(image, num_seams_to_remove):
     rows.
     """
 
-    raise NotImplementedError(
-        'remove_n_lowest_seams_from_image is not implemented')
+    times = []
+
+    for i in range(num_seams_to_remove):
+
+        t1 = time_ns()
+        energy_data = compute_energy(image)
+        seam, _ = compute_vertical_seam_v2(energy_data)
+        image = remove_seam_from_image(image, seam)
+        times.append(time_ns() - t1)
+        write_array_into_image(image, f'out/{i}.png')
+
+    print(f'Average time taken per seam: {mean(times)/10**9:.2f}s')
+    return image
 
 if __name__ == '__main__':
     if len(sys.argv) != 4:
@@ -68,7 +89,8 @@ if __name__ == '__main__':
     print(f'Reading {input_filename}...')
     pixels = read_image_into_array(input_filename)
 
-    print(f'Saving {output_filename}')
+    print(f'Resizing...')
     resized_pixels = \
         remove_n_lowest_seams_from_image(pixels, num_seams_to_remove)
+    print(f'Saving {output_filename}')
     write_array_into_image(resized_pixels, output_filename)

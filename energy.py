@@ -11,6 +11,7 @@ representing pixels:
 
 
 import sys
+from typing import List
 
 from utils import Color, read_image_into_array, write_array_into_image
 
@@ -45,7 +46,7 @@ def energy_at(pixels:list[Color], x:int, y:int) -> int:
 
     return dx + dy
 
-def compute_energy(pixels:list[Color]) -> list[int]:
+def compute_energy(pixels:List[List[Color]]) -> List[List[int]]:
     """
     Compute the energy of the image at every pixel. Should use the `energy_at`
     function to actually compute the energy at any single position.
@@ -73,7 +74,7 @@ def compute_energy(pixels:list[Color]) -> list[int]:
     return energy_data
 
 
-def energy_data_to_colors(energy_data):
+def energy_data_to_colors(energy_data:List[List[int]]) -> List[List[Color]]:
     """
     Convert the energy values at each pixel into colors that can be used to
     visualize the energy of the image. The steps to do this conversion are:

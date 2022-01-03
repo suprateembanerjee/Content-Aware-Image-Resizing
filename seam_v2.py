@@ -49,7 +49,7 @@ class SeamEnergyWithBackPointer:
         return self.total_energy > other.total_energy
 
 
-def compute_vertical_seam_v2(energy_data: list[Color]) -> tuple[list[int],int]:
+def compute_vertical_seam_v2(energy_data: List[List[int]]) -> tuple[list[int],int]:
     """
     Find the lowest-energy vertical seam given the energy of each pixel in the
     input image. The image energy should have been computed before by the
@@ -103,12 +103,14 @@ def compute_vertical_seam_v2(energy_data: list[Color]) -> tuple[list[int],int]:
         M = M[:-1]
         seam_head = prev_x
 
+    seam.append(seam_head)
+
     seam = list(reversed(seam))
 
     return seam, energy
 
 
-def visualize_seam_on_image(pixels: list[Color], seam_xs: list[int]) -> List[List[int]]:
+def visualize_seam_on_image(pixels: List[List[Color]], seam_xs: list[int]) -> List[List[Color]]:
     """
     Draws a red line on the image along the given seam. This is done to
     visualize where the seam is.
