@@ -13,6 +13,7 @@ seam will be visualized:
 
 
 import sys
+from typing import List
 
 from energy import compute_energy
 from utils import Color, read_image_into_array, write_array_into_image
@@ -30,8 +31,6 @@ class SeamEnergyWithBackPointer:
         to this particular seam energy. This is the back pointer from which the
         entire seam can be reconstructed.
 
-    You will implement this class as part of the second version of the vertical
-    seam finding algorithm.
     """
 
     total_energy = 0
@@ -50,7 +49,7 @@ class SeamEnergyWithBackPointer:
         return self.total_energy > other.total_energy
 
 
-def compute_vertical_seam_v2(energy_data: list[Color]) -> tuple[list[SeamEnergyWithBackPointer],int]:
+def compute_vertical_seam_v2(energy_data: list[Color]) -> tuple[list[int],int]:
     """
     Find the lowest-energy vertical seam given the energy of each pixel in the
     input image. The image energy should have been computed before by the
@@ -77,10 +76,6 @@ def compute_vertical_seam_v2(energy_data: list[Color]) -> tuple[list[SeamEnergyW
     for i, row in enumerate(energy_data):
         m = []
 
-        # if i == 0:
-        #     M.append(energy_data[i])
-        #     continue
-
         for j, energy in enumerate(row):
 
             if i == 0:
@@ -94,12 +89,7 @@ def compute_vertical_seam_v2(energy_data: list[Color]) -> tuple[list[SeamEnergyW
 
                 choice = choices.index(min(choices))
 
-                if choice == 0:
-                    m.append(SeamEnergyWithBackPointer(energy + choices[choice], j - 1, len(row)))
-                elif choice == 1:
-                    m.append(SeamEnergyWithBackPointer(energy + choices[choice], j, len(row)))
-                else:
-                    m.append(SeamEnergyWithBackPointer(energy + choices[choice], j + 1, len(row)))
+                m.append(SeamEnergyWithBackPointer(energy + choices[choice], j + choice - 1, len(row)))
 
         M.append(m)
 
@@ -118,15 +108,11 @@ def compute_vertical_seam_v2(energy_data: list[Color]) -> tuple[list[SeamEnergyW
     return seam, energy
 
 
-    # return (M[-1].index(min(M[-1])), min(M[-1]))
-
-
-def visualize_seam_on_image(pixels, seam_xs):
+def visualize_seam_on_image(pixels: list[Color], seam_xs: list[int]) -> List[List[int]]:
     """
     Draws a red line on the image along the given seam. This is done to
     visualize where the seam is.
 
-    This is NOT one of the functions you have to implement.
     """
 
     h = len(pixels)
