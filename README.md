@@ -23,7 +23,7 @@ Setup
 
 1. Install the dependencies using `pip`: `pip install -r requirements.txt`
 
-1. Now you should be able to implement and run the code as explained at the top of each exercise file.
+Run the files in terminal using descriptions at the beginning of each file.
 
 Image credits
 -------------
