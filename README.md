@@ -1,16 +1,18 @@
-Content-aware image resizing
+Content-aware Image Resizing (Liquid Rescaling)
 ============================================================
 
 There are four steps in the implementation:
 
-| Step | Exercise file | Description                                |
-|------|---------------|--------------------------------------------|
-| 1    | `energy.py`   | Energy calculation                         |
-| 2    | `seam_v1.py`  | Finding the lowest-energy seam (version 1) |
-| 3    | `seam_v2.py`  | Finding the lowest-energy seam (version 2) |
-| 4    | `carve.py`    | Removing seams from the image              |
+| Step | Exercise file    | Description                                |
+|------|------------------|--------------------------------------------|
+| 1    | `energy.py`      | Energy calculation                         |
+| 2    | `seam.py`        | Finding the lowest-energy seam             |
+| 3    | `carve.py`       | Removing seams from the image              |
+| 4    | `resize.py`      | Resizing an image to given dimensions      |
+| 5    | `video_stitch.py`| Stitching visualized frames to make a video|
 
-Each step is documented at the top of the files.
+
+Each step is documented at the top of the exercise file.
 
 Setup
 -----
@@ -21,12 +23,25 @@ Setup
 
 Run the files in terminal using descriptions at the beginning of each file.
 
-For a one-shot test, run carve using `python carve.py surfer.jpg 100 surfer_resized.png`
+For a one-shot test, run carve using `python resize.py andaman.jpg 1300 2000 True`
+
+File Format
+---------
+Images are stored inside the **images** directory, in *jpg* format.
+
+Outputs such as videos, intermediate and final images are stored in the **out** directory in *mp4* and *png* format respectively. Videos are titled similarly to the input image, with "\_result" suffixed, while images are suffixed with "\_intermediate" and "\_resized" to indicate the intermediate and final output.
+
+Visualized seams are stored in the **visual_out** directory. Two subdirectories titled **vertical** and **horizontal** contain vertical reductions and horizontal reductions respectively. The frames are titled similarly to the input images with "\_x" suffixed where x denotes number of reduction, in *png* format. These are used to construct the video output at the end, if indicated so while operating **resize.py**.
+
 
 Image credits
 -------------
 
 All images are free to redistribute. Attribution is not necessary, but encouraged:
+
+- Seatree - [Suprateem Banerjee](https://www.instagram.com/dolphinextreme48/) on [Blues Photo Journal](www.tinyurl.com/blues-photobook)
+
+- Andaman - [Suprateem Banerjee](https://www.instagram.com/dolphinextreme48/) from Personal Collection
 
 - Surfer - [Kiril Dobrev](https://pixabay.com/users/kirildobrev-12266114/) on [Pixabay](https://pixabay.com/photos/blue-beach-surf-travel-surfer-4145659/)
 

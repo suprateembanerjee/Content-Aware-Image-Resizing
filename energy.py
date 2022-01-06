@@ -1,12 +1,7 @@
 """
 The first step in the seam carving algorithm: computing the energy of an image.
 
-The functions you fill out in this module will be used as part of the overall
-seam carving process. If you run this module in isolation, the energy of an
-image will be visualized as a grayscale heat map, with brighter spots
-representing pixels:
-
-    python3 energy.py surfer.jpg surfer-energy.png
+Usage:  python3 energy.py surfer.jpg surfer-energy.png
 """
 
 
@@ -25,8 +20,12 @@ def energy_at(pixels:list[Color], x:int, y:int) -> int:
     of the image, the current position is used whenever a "surrounding position"
     would go out of bounds.
 
-    This is one of the functions you will need to implement. Expected return
-    value: a single number representing the energy at that point.
+    Params:
+    pixels: 2D List of Color objects.
+    x: x coordinate of pixel under consideration.
+    y: y coordinate of pixel under consideration.
+
+    Return: Energy at the coordinate location. 
     """
 
 
@@ -46,30 +45,31 @@ def energy_at(pixels:list[Color], x:int, y:int) -> int:
 
     return dx + dy
 
-def compute_energy(pixels:List[List[Color]]) -> List[List[int]]:
+def compute_energy(pixels:List[List[Color]], metric:str = 'gradient') -> List[List[int]]:
     """
     Compute the energy of the image at every pixel. Should use the `energy_at`
     function to actually compute the energy at any single position.
 
-    The input is given as a 2D array of colors, and the output should be a 2D
+    Params:
+    pixels: 2D List of Color objects.
+    metric: String indicating metric of energy calculation.
 
-    array of numbers, each representing the energy value at the corresponding
-    position.
-    This is one of the functions you will need to implement. Expected return
-    value: the 2D grid of energy values.
+    Return: 2D List of numbers, each representing the energy value at the corresponding position.
     """
 
     energy_data = []
 
-    for i, r in enumerate(pixels):
+    if metric == 'gradient':
 
-        energy = []
+        for i, r in enumerate(pixels):
 
-        for j, _ in enumerate(r):
+            energy = []
 
-            energy.append(energy_at(pixels, i, j))
+            for j, _ in enumerate(r):
 
-        energy_data.append(energy)
+                energy.append(energy_at(pixels, i, j))
+
+            energy_data.append(energy)
 
     return energy_data
 
@@ -83,7 +83,10 @@ def energy_data_to_colors(energy_data:List[List[int]]) -> List[List[Color]]:
       2. Convert these values into grayscale colors, where the RGB values are
          all the same for a single color.
 
-    This is NOT one of the functions you have to implement.
+    Params:
+    energy_data: 2D List of integer energy values at coordinate locations.
+
+    Return: 2D List of Color objects as calculated.
     """
 
     colors = [[0 for _ in row] for row in energy_data]
@@ -115,7 +118,7 @@ if __name__ == '__main__':
     output_filename = sys.argv[2]
 
     print(f'Reading {input_filename}...')
-    pixels = read_image_into_array(input_filename)
+    pixels = read_image_into_array(f'images/{input_filename}')
 
     print('Computing the energy...')
     energy_data = compute_energy(pixels)
