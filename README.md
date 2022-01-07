@@ -1,4 +1,4 @@
-Context-Aware Image Resizing (Liquid Rescaling)
+Content-Aware Image Resizing (Liquid Rescaling)
 ============================================================
 
 There are four steps in the implementation:
