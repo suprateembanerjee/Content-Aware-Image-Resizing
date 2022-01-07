@@ -1,7 +1,7 @@
 Content-Aware Image Resizing (Liquid Rescaling)
 ============================================================
 
-There are four steps in the implementation:
+There are five steps in the implementation:
 
 | Step | Exercise file    | Description                                |
 |------|------------------|--------------------------------------------|
